@@ -1,7 +1,10 @@
 import React from 'react'
 import './Header.css'
 import { Link } from 'react-router-dom'
+import {useContext, useEffect } from 'react'
+import { AuthContext } from '../../Context/AuthContext'
 const Header = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <>
       <div className='container mt-5'>
@@ -10,7 +13,7 @@ const Header = () => {
             <Link className='logo'  to="/transactions"><h2 >ExpenseManager</h2></Link>
           </div>
           <div className="col-md-5 col-12   d-flex flex-column align-items-md-end align-items-start  ">
-            <span className='logout'>Logout <i class="fa-solid  fa-arrow-right-from-bracket" /></span>
+            <button className='logout border-0' onClick={logout} >Logout <i className="fa-solid  fa-arrow-right-from-bracket" /></button>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 .logo{
-    color: blue;
+    color: #198dc7;
     text-decoration: none;
 }
 .logo:hover{
     cursor: pointer;
     text-decoration: none;
-    color: blue;
+    color: #198dc7;
 }
 .logout{
     font-size: 1.3rem;
