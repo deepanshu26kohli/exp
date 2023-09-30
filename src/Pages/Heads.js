@@ -1,24 +1,22 @@
-import React,{useContext, useEffect } from 'react'
+import React,{useContext, useEffect, useState } from 'react'
 import Banner from '../Components/Banner/Banner'
 import Header from '../Components/Header/Header'
 import AddHeader from '../Components/AddHeader/AddHeader'
-import { AuthContext } from '../Context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import ShowHead from '../Components/ShowHead.js/ShowHead'
+import { fetchAllHeads } from '../Redux/Action/Header/GetAllHeads'
+import { useDispatch } from 'react-redux'
 const Heads = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const [refresh,setRefresh] = useState(false);
   useEffect(()=>{
-    if(!isLoggedIn){
-      // navigate('/');
-    }
-    // console.log(isLoggedIn,"wert")
-  },[isLoggedIn])
+    dispatch(fetchAllHeads());
+  },[refresh])
   return (
     <>
       <Header />
       <Banner />
-      <AddHeader />
+      <AddHeader refresh = {refresh} setRefresh = {setRefresh} />
+      <ShowHead refresh = {refresh} setRefresh = {setRefresh} />
     </>
   )
 }

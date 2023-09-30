@@ -4,10 +4,10 @@ import axios from 'axios';
 function* getTypeOftransaction(){
     try{
         const response = yield call(axios.get, `${BASEURL}/typeoftransaction`,{headers});
-        console.log("type of transaction",response.data);
+        // console.log("type of transaction",response.data);
         yield put({ type: 'GET_TYPE_OF_TRANSACTION_SUCCESS', data: response.data });
     }catch(err){
-        console.log("type of transaction error",err);
+        // console.log("type of transaction error",err);
         yield put({ type: 'GET_TYPE_OF_TRANSACTION_ERROR', data : err });
     }
 }

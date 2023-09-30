@@ -8,10 +8,12 @@ import Heads from './Pages/Heads'
 import Bank from './Pages/Bank'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTypeOfTransactionData } from './Redux/Action/Header/TypeOfTransaction';
+import { fetchAllHeads } from './Redux/Action/Header/GetAllHeads';
 const App = () => {
   const dispatch = useDispatch();
   React.useEffect(()=>{
     dispatch(fetchTypeOfTransactionData());
+    // dispatch(fetchAllHeads());
   },[])
   return (
     <>
