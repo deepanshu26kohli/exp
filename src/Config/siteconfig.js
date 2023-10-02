@@ -10,7 +10,7 @@ if(token!=null){
 }
 export {headers}
 export function printfxn(x,y){
-  console.log(x,y);
+  return null;
 }
 
 

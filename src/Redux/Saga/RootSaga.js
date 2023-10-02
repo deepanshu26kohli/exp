@@ -5,6 +5,13 @@ import AddHeadSaga from './Header/AddHeadSaga';
 import DeleteHeadSaga from './Header/DeleteHeadSaga';
 import getAllBanksSaga from './Bank/GetAllBanksSaga';
 import AddBankSaga from './Bank/AddBankSaga';
+import getAllTransactionsSaga from './Transaction/GetAllTransactionSaga';
+import AddTransactaionSaga from './Transaction/AddTransactionSaga';
+import BalanceSaga from './Balance/BalanceSaga';
+import IncomeSaga from './Income/IncomeSaga';
+import ExpenseSaga from './Expense/Expense';
+import CashSaga from './Cash/Cash';
+import BankBalanceSaga from './BankBalance/BankBalanceSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -13,6 +20,13 @@ export default function* rootSaga() {
    AddHeadSaga(),
    DeleteHeadSaga(),
    getAllBanksSaga(),
-   AddBankSaga()
+   AddBankSaga(),
+   getAllTransactionsSaga(),
+   AddTransactaionSaga(),
+   BalanceSaga(),
+   IncomeSaga(),
+   ExpenseSaga(),
+   CashSaga(),
+   BankBalanceSaga()
   ]);
 }

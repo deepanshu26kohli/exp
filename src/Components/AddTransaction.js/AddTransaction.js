@@ -1,6 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { postTransaction } from '../../Redux/Action/Transaction/AddTransaction';
 
-const AddTransaction = () => {
+const AddTransaction = (props) => {
+  const typeOfTransaction = useSelector((state) => state.typeOfTransactionReducer);
+  const allHeads = useSelector((state) => state.getAllHeadsReducer);
+  const allBanks = useSelector((state) => state.getAllBanksReducer);
+  const [amount,setAmount] = useState(0);
+  const [type,setType] = useState("");
+  const [head,setHead] = useState("");
+  const [bank,setBank] = useState("");
+  const [date,setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [note, setNote] = useState("")
+  const dispatch = useDispatch();
+  const submitTransaction = (e)=>{
+    e.preventDefault();
+    dispatch(postTransaction({amount,head_id:head,bank_id:bank,typeoftransaction_id:type,date,notes:note}));
+    setAmount(0);
+    setType("");
+    setHead("");
+    setBank("");
+    setDate(new Date().toISOString().slice(0, 10));
+    setNote("");
+    props.setRefresh(()=>{
+      if (props.refresh){
+          return false
+      }
+      else{
+          return true
+      }
+  });
+  }
   return (
     <div className="container mt-3">
     <div className="row p-3 mx-1 mx-md-0 border rounded">
@@ -12,72 +42,59 @@ const AddTransaction = () => {
         </div>
       </div>
       <div className=" col-12">
-        <form className='row ' >
+        <form className='row' onSubmit={submitTransaction}>
           <div className="form-group col-md-3 col-12">
-            <label >Amount</label>
-            <input type="number" className="form-control" placeholder="Enter amount" />
+            <label>Amount</label>
+            <input onChange={(e)=>setAmount(e.target.value)} value={amount} name="amount" type="number" className="form-control" placeholder="Enter amount" />
           </div>
           <div className="form-group col-md-3 col-12">
-            <label >Header</label>
+            <label >Heads</label>
 
-            <select className="form-control" >
-              <option value="">Select Header</option>
-              {/* {
-                                headerResult && headerResult.map((e, id) => {
-                                    return <option key={id} value={JSON.stringify(e)}>{e.Header}</option>
-                                })
-                            } */}
+            <select required className="form-select" name='head_id' value={head} onChange={(e)=>{setHead(e.target.value)}} >
+              <option value="">Select Head/Party</option>
+              {
+                            allHeads.length && allHeads.map((e) => {
+                                    return <option key={e.id} value={e.id}>{e.name}</option>
+                            })
+              }
             </select>
           </div>
           <div className="form-group col-12 col-md-3" >
             <label >Type of transaction</label>
-            <select className="form-control" >
-              <option value="">Select Type</option>
-              <option value="Income">Income</option>
-              <option value="Expense">Expense</option>
-              <option value="Purchase">Purchase</option>
-              <option value="Sale">Sale</option>
-              <option value="Investment">Investment</option>
+            <select required className="form-select" name='typeoftransaction_id' value={type} onChange={(e)=>{setType(e.target.value)}} >
+              <option value="">Select Transaction</option>
+              {
+                            typeOfTransaction.length && typeOfTransaction.map((e) => {
+                                    return <option key={e.id} value={e.id}>{e.name}</option>
+                            })
+              }
             </select>
           </div>
           <div className="form-group col-12 col-md-3" >
-            <label >Mode of transaction</label>
-            <select className="form-control"  >
-              <option value="">Select Mode</option>
-              <option value="Cash">Cash</option>
-              <option value="Add Bank">Bank</option>
+            <label >Banks/Cash</label>
+            <select required className="form-select" name='bank_id' value={bank} onChange={(e)=>{setBank(e.target.value)}} >
+              <option value="">Select Bank/Cash</option>
+              {
+                            allBanks.length && allBanks.map((e) => {
+                                    return <option key={e.id} value={e.id}>{e.bank_name}</option>
+                            })
+              }
+              <option value={2}>Cash</option>
             </select>
           </div>
-          {/* {
-                        modeRef.current.value === "Add Bank" ? <div className="col-md-4 col-12 form-group" >
-                            <label >Select Bank</label>
-                            <select className="form-control" onChange={myBank} >
-                                <option value="">Bank List</option>
-                                {
-                                    bankListResult && bankListResult.map((e, id) => {
-                                        return <option key={id} value={JSON.stringify(e)}>
-                                            {e.bankName}--{e.holderName}
-                                        </option>
-                                    })
-                                }
-                            </select>
-                        </div> : ""
-                    } */}
           <div className="col-md-4 col-12 form-group">
             <label >Date</label>
-            <input type="date" className="form-control" />
+            <input value={date} onChange={(e)=>{setDate(e.target.value)}} type="date" className="form-control" />
           </div>
           <div className="col-md-4 col-12 form-group">
             <label >Add Note here</label>
-            <textarea className="form-control" rows="3"></textarea>
+            <textarea value={note} onChange={(e)=>{setNote(e.target.value)}} className="form-control" rows="3"></textarea>
           </div>
-          {/* <p className='col-12' style={{ 'color': "red" }}>{formErr}</p> */}
           <div className="row">
             <div className="col">
               <button type="submit" className="btn btn-sm btn-dark my-3">Submit</button>
             </div>
           </div>
-
         </form>
       </div>
     </div>
