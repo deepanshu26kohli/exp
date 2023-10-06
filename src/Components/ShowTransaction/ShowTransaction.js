@@ -1,21 +1,43 @@
 import React from 'react'
 import { printfxn, BASEURL, headers } from '../../Config/siteconfig';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 const ShowTransaction = (props) => {
     const [amount, setAmount] = useState(0);
+    const [searchHead,setSearchHead] = useState("");
+    const [searchData,setSearchData] = useState();
     const [type, setType] = useState("");
     const [head, setHead] = useState("");
     const [bank, setBank] = useState("");
     const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
     const [note, setNote] = useState("")
+
     const allHeads = useSelector((state) => state.getAllHeadsReducer);
+
     const typeOfTransaction = useSelector((state) => state.typeOfTransactionReducer);
     const allBanks = useSelector((state) => state.getAllBanksReducer);
+
     // console.log("show transactuion",allHeads,typeOfTransaction);
     const allTransactions = useSelector((state) => state.getAllTransactionReducer);
     // console.log("show transactuion",allHeads,typeOfTransaction,allTransactions);
+    // console.log(allTransactions)
+    function search(searchHead){
+             console.log(searchHead);
+             if(searchHead){
+                axios.get(`${BASEURL}/search/${searchHead}`, { headers })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.error('Error Searching Head:', error);
+                });
+             }
+             else{
+                console.log("fill valid search")
+             }
+           
+    }
     const [editId, setEdit] = useState("");
     function delete_Transaction(id) {
         axios.delete(`${BASEURL}/delete-transaction/${id}`, { headers })
@@ -34,7 +56,7 @@ const ShowTransaction = (props) => {
             }
         });
     }
-    function getEditTransactionData(id){
+    function getEditTransactionData(id) {
         axios.get(`${BASEURL}/edit-transaction/${id}`, { headers })
             .then(response => {
                 console.log(response.data);
@@ -46,17 +68,17 @@ const ShowTransaction = (props) => {
                 console.error('Error fetching data:', error);
             });
     }
-    const editSubmitForm = (e)=>{
+    const editSubmitForm = (e) => {
         e.preventDefault();
-        let editedTransaction = {amount,head_id:head,bank_id:bank,typeoftransaction_id:type,date,notes:note};
+        let editedTransaction = { amount, head_id: head, bank_id: bank, typeoftransaction_id: type, date, notes: note };
         //apicall
-        axios.put(`${BASEURL}/update-transaction/${editId}`,editedTransaction, { headers })
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+        axios.put(`${BASEURL}/update-transaction/${editId}`, editedTransaction, { headers })
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
         setAmount(0);
         setType("");
         setHead("");
@@ -82,8 +104,25 @@ const ShowTransaction = (props) => {
     return (
         <>
             <div className='container border rounded mt-3 p-3'>
-                <h3>Transaction History</h3>
-                <div className='table-responsive border rounded p-3'>
+                <div className="row">
+                    <div className="col-6">
+                        <h3>Transaction History</h3>
+                    </div>
+                    <div className="col-4">
+                        <select required className="form-select w-50" name='head_id' value={searchHead} onChange={(e) => { setSearchHead(e.target.value) }} >
+                            <option value="">Select Head/Party</option>
+                            {
+                                allHeads.length && allHeads.map((e) => {
+                                    return <option key={e.id} value={e.id}>{e.name}</option>
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div className='col-2'>
+                        <button onClick={()=>search(searchHead)}>Search</button>
+                    </div>
+                </div>
+                <div className='table-responsive border rounded p-3 mt-2'>
                     <table className="table table-striped ">
                         <thead>
                             <tr>
@@ -102,7 +141,7 @@ const ShowTransaction = (props) => {
                                     return editId !== e.id ? (
                                         <tr key={e.id}>
                                             <td>{e.amount}</td>
-                                            <td>{e.head[0].name}</td>
+                                            <td style={{ color: `${e.head[0].color}` }}>{e.head[0].name}</td>
                                             <td>{e.bank[0].bank_name}</td>
                                             <td>{e.date}</td>
                                             <td>{e.typeoftransaction[0].name}</td>
@@ -134,18 +173,18 @@ const ShowTransaction = (props) => {
                                                     }
                                                 </select>
                                             </td>
-                                            <td style={{ "width": "10vw" }}> 
-                                            <select required className="form-select" name='bank_id' value={bank} onChange={(e) => { setBank(e.target.value) }} >
-                                                <option value="">Select Bank/Cash</option>
-                                                {
-                                                    allBanks.length && allBanks.map((e) => {
-                                                        return <option key={e.id} value={e.id}>{e.bank_name}</option>
-                                                    })
-                                                }
-                                                <option value={2}>Cash</option>
-                                            </select></td>
+                                            <td style={{ "width": "10vw" }}>
+                                                <select required className="form-select" name='bank_id' value={bank} onChange={(e) => { setBank(e.target.value) }} >
+                                                    <option value="">Select Bank/Cash</option>
+                                                    {
+                                                        allBanks.length && allBanks.map((e) => {
+                                                            return <option key={e.id} value={e.id}>{e.bank_name}</option>
+                                                        })
+                                                    }
+                                                    <option value={2}>Cash</option>
+                                                </select></td>
                                             <td style={{ "width": "5vw" }}>
-                                            <input value={date} onChange={(e)=>{setDate(e.target.value)}} type="date" className="form-control" />
+                                                <input value={date} onChange={(e) => { setDate(e.target.value) }} type="date" className="form-control" />
                                             </td>
                                             <td style={{ "width": "10vw" }}>
                                                 <select required className="form-select" name='typeoftransaction_id' value={type} onChange={(e) => { setType(e.target.value) }} >
@@ -174,9 +213,9 @@ const ShowTransaction = (props) => {
                                         </tr>
                                     )
                                 })
-                                    : <tr>
-                                        <td>No Transaction Added Yet</td>
-                                    </tr>
+                                    : <p className='mx-auto'>
+                                        No Transactions Added Yet
+                                    </p>
                             }
                         </tbody>
                     </table>

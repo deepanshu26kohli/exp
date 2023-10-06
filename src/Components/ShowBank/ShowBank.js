@@ -91,7 +91,7 @@ const ShowBank = (props) => {
                         </thead>
                         <tbody>
                             {
-                                allBanks.length && allBanks.map((e) => {
+                                allBanks.length ? allBanks.map((e) => {
                                     return editId !== e.id ? (
                                         <tr key={e.id}>
                                             <td>{e.bank_name}</td>
@@ -138,7 +138,7 @@ const ShowBank = (props) => {
                                                 </div>
                                             </td>
                                         </tr>)
-                                })
+                                }):<p>No Banks Added yet</p>
                             }
                         </tbody>
                     </table>

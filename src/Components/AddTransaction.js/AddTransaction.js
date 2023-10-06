@@ -22,6 +22,7 @@ const AddTransaction = (props) => {
     setBank("");
     setDate(new Date().toISOString().slice(0, 10));
     setNote("");
+    console.log("added")
     props.setRefresh(()=>{
       if (props.refresh){
           return false
@@ -79,7 +80,7 @@ const AddTransaction = (props) => {
                                     return <option key={e.id} value={e.id}>{e.bank_name}</option>
                             })
               }
-              <option value={2}>Cash</option>
+              <option value={3}>Cash</option>
             </select>
           </div>
           <div className="col-md-4 col-12 form-group">

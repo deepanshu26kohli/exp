@@ -81,7 +81,7 @@ const ShowHead = (props) => {
                         </thead>
                         <tbody>
                             {
-                                allHeads.length && allHeads.map((e) => {
+                                allHeads.length ? allHeads.map((e) => {
                                     return editId !== e.id ? (
                                         <tr key={e.id}>
                                             <td>{e.name}</td>
@@ -130,7 +130,7 @@ const ShowHead = (props) => {
                                                 </div>
                                             </td>
                                         </tr>)
-                                })
+                                }):<p>No Headers/Parties Added yet</p>
                             }
                         </tbody>
                     </table>
