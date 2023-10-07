@@ -29,7 +29,7 @@ const ShowHead = (props) => {
                 console.log(response.data)
                 setName(response.data.head.name)
                 setColor(response.data.head.color)
-                setType(response.data.head.type_of_transaction_id)
+                setType(response.data.head.typeoftransaction_id)
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -111,10 +111,9 @@ const ShowHead = (props) => {
                                             </td>
                                             <td style={{ "width": "13vw" }}>
                                                 <select required className="form-select" name='typeoftransaction_id' value={type} onChange={(e) => { setType(e.target.value) }} >
-                                                    <option value="">Select Transaction</option>
                                                     {
-                                                        typeOfTransaction.length && typeOfTransaction.map((e) => {
-                                                            return <option key={e.id} value={e.id}>{e.name}</option>
+                                                        typeOfTransaction.length && typeOfTransaction.map((x) => {
+                                                            return e.type_of_transaction[0].id != x.id?(<option key={x.id} value={x.id}>{x.name}</option>):<option selected value={e.type_of_transaction[0].id}>{e.type_of_transaction[0].name}</option>
                                                         })
                                                     }
                                                 </select>

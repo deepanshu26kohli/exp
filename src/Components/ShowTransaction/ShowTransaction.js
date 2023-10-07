@@ -61,6 +61,9 @@ const ShowTransaction = (props) => {
                 setAmount(response.data.transaction.amount);
                 setDate(response.data.transaction.date);
                 setNote(response.data.transaction.notes);
+                setType(response.data.transaction.typeoftransaction_id);
+                setBank(response.data.transaction.bank_id);
+                setHead(response.data.transaction.head_id)
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -156,47 +159,47 @@ const ShowTransaction = (props) => {
                                                 </div>
 
                                             </td>
-                                        </tr>):    <tr key={e.id}>
+                                        </tr>):  <tr key={e.id}>
                                             <td style={{ "width": "5vw" }}>
-                                                <input required type="number" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" />
+                                                <input required type="number" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" style={{width:"13vw"}} />
                                             </td>
                                             <td style={{ "width": "10vw" }}>
-                                                <select required className="form-select" name='head_id' value={head} onChange={(e) => { setHead(e.target.value) }} >
-                                                    <option value="">Select Head/Party</option>
+                                                <select required className="form-select" name='head_id' value={head} onChange={(e) => { setHead(e.target.value) }}>                  
                                                     {
-                                                        allHeads.length && allHeads.map((e) => {
-                                                            return <option key={e.id} value={e.id}>{e.name}</option>
+                                                        allHeads.length && allHeads.map((x) => {
+                                                            return e.head[0].id != x.id?(<option key={x.id} value={x.id}>{x.name}</option>):<option selected value={e.head[0].id}>{e.head[0].name}</option>
                                                         })
                                                     }
                                                 </select>
                                             </td>
                                             <td style={{ "width": "10vw" }}>
                                                 <select required className="form-select" name='bank_id' value={bank} onChange={(e) => { setBank(e.target.value) }} >
-                                                    <option value="">Select Bank/Cash</option>
+                                                    
                                                     {
-                                                        allBanks.length && allBanks.map((e) => {
-                                                            return <option key={e.id} value={e.id}>{e.bank_name}</option>
+                                                        allBanks.length && allBanks.map((x) => {
+                                                            return e.bank[0].id != x.id?(<option key={x.id} value={x.id}>{x.name}</option>):<option selected value={e.bank[0].id}>{e.bank[0].bank_name}</option>
                                                         })
                                                     }
-                                                    <option value={2}>Cash</option>
+                                                    <option value={999}>Cash</option>
                                                 </select></td>
                                             <td style={{ "width": "5vw" }}>
                                                 <input value={date} onChange={(e) => { setDate(e.target.value) }} type="date" className="form-control" />
                                             </td>
                                             <td style={{ "width": "10vw" }}>
-                                                <select required className="form-select" name='typeoftransaction_id' value={type} onChange={(e) => { setType(e.target.value) }} >
-                                                    <option value="">Select Transaction</option>
+                                                <select required className="form-select" name='typeoftransaction_id' value={type} onChange={(e) => { setType(e.target.value) }} > 
                                                     {
-                                                        typeOfTransaction.length && typeOfTransaction.map((e) => {
-                                                            return <option key={e.id} value={e.id}>{e.name}</option>
+    
+                                                        typeOfTransaction.length && typeOfTransaction.map((x) => {
+                                                            return e.typeoftransaction[0].id != x.id?(<option key={x.id} value={x.id}>{x.name}</option>):<option selected value={e.typeoftransaction[0].id}>{e.typeoftransaction[0].name}</option>
                                                         })
-                                                    }
+                                                        // setType(e.typeoftransaction[0].id)
+                                                    }                                                 
                                                 </select>
                                             </td>
                                             <td style={{ "width": "5vw" }}>
                                                 <input required type="text" name="note" value={note} onChange={(e) => setNote(e.target.value)} className="form-control" />
                                             </td>
-                                            <td>    
+                                            <td>
                                                 <div className='row justify-content-between  w-50 w-sm-100'>
                                                     <div className='col-4'>
                                                         <button className='btn-sm btn-warning btn shadow' onClick={editSubmitForm} >Update</button>
@@ -226,13 +229,12 @@ const ShowTransaction = (props) => {
                                                         <button onClick={() => delete_Transaction(e.id)} className=' btn-sm btn-danger btn shadow'>Delete</button>
                                                     </div>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     ) : (
                                         <tr key={e.id}>
                                             <td style={{ "width": "5vw" }}>
-                                                <input required type="number" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" />
+                                                <input required type="number" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" style={{width:"13vw"}} />
                                             </td>
                                             <td style={{ "width": "10vw" }}>
                                                 <select required className="form-select" name='head_id' value={head} onChange={(e) => { setHead(e.target.value) }} >
@@ -245,14 +247,13 @@ const ShowTransaction = (props) => {
                                                 </select>
                                             </td>
                                             <td style={{ "width": "10vw" }}>
-                                                <select required className="form-select" name='bank_id' value={bank} onChange={(e) => { setBank(e.target.value) }} >
-                                                    
+                                                <select required className="form-select" name='bank_id' value={bank} onChange={(e) => { setBank(e.target.value) }} >    
                                                     {
                                                         allBanks.length && allBanks.map((x) => {
                                                             return e.bank[0].id != x.id?(<option key={x.id} value={x.id}>{x.name}</option>):<option selected value={e.bank[0].id}>{e.bank[0].bank_name}</option>
                                                         })
                                                     }
-                                                    <option value={2}>Cash</option>
+                                                    <option value={999}>Cash</option>
                                                 </select></td>
                                             <td style={{ "width": "5vw" }}>
                                                 <input value={date} onChange={(e) => { setDate(e.target.value) }} type="date" className="form-control" />
@@ -280,7 +281,6 @@ const ShowTransaction = (props) => {
                                                         <button onClick={() => setEdit("")} className=' btn-sm btn-info btn shadow'>Back</button>
                                                     </div>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     )

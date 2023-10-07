@@ -80,7 +80,7 @@ const AddTransaction = (props) => {
                                     return <option key={e.id} value={e.id}>{e.bank_name}</option>
                             })
               }
-              <option value={2}>Cash</option>
+              <option value={999}>Cash</option>
             </select>
           </div>
           <div className="col-md-4 col-12 form-group">
