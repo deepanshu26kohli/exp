@@ -1,14 +1,28 @@
 import React from 'react'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { postBank } from '../../Redux/Action/Bank/AddBank';
 const AddBank = (props) => {
+  const cash = useSelector((state)=>state.getCashReducer)
   const [bankName, setBankName] = useState("");
   const [holderName, setHolderName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [ifscCode, setIfscCode] = useState("");
   const [bankBalance, setBankBalance] = useState(0);
+  const [update,setUpdate] = useState(false)
+  const [updatedCash,setUpdatedCash] = useState(cash.totalAmount)
   const dispatch = useDispatch();
+  const editCash = ()=>{
+    setUpdate(true)
+    console.log("Cash Edit clicked")
+  }
+  const backCash = ()=>{
+    setUpdate(false)
+    console.log("Back Cash Edit clicked",cash.totalAmount)
+  }
+  const updateCash = ()=>{
+
+  }
   const submitHead = (e) => {
     e.preventDefault()
     dispatch(postBank({ bank_name: bankName, holder_name: holderName, account_number: accountNumber, ifsc_code: ifscCode, bank_balance: bankBalance }))
@@ -66,14 +80,23 @@ const AddBank = (props) => {
           </form>
         </div>
         <div className="row ">
-          <div className="col-2">
+          <div className="col">
             <h5>Add Cash</h5>
           </div>
-          <div className="col-2">
-            <input type="number" placeholder='Add Cash amount' />
-            <button type="submit" className="btn btn-sm btn-dark my-3">Submit</button>
-          </div>
         </div>
+        <form>
+          <div className="row">
+            <div className='col-3'>
+              <input type="number" placeholder='Add Cash amount' className='px-2 form-control' />
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-3'>
+              <button type="submit" className="btn btn-sm btn-dark my-3">Submit</button>
+            </div>
+          </div>
+        </form>
+        {update ?<><input type='number' className='w-25' value={updatedCash}/><span onClick={backCash} style={{cursor:'pointer', color:'blue'}}>Back</span><span onClick={updateCash} style={{cursor:'pointer', color:'blue'}}>Update</span></>:<span onClick={editCash} style={{cursor:'pointer', color:'blue'}}>Edit Cash</span>}
       </div>
     </div>
   )
