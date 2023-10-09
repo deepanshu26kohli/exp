@@ -29,14 +29,7 @@ const Login = (props) => {
                         console.log(tk);
                         localStorage.setItem('_k', [...tk].reverse().join(""))
                         login();
-                        props.setRefresh(() => {
-                            if (props.refresh) {
-                                return false
-                            }
-                            else {
-                                return true
-                            }
-                        });
+                        
                         console.log(response.data.message)
                         toast.error(response.data.message, { theme: "colored", });
                         navigate('/transactions');
@@ -44,7 +37,6 @@ const Login = (props) => {
                     console.log(response.data.message)
                     toast.error(response.data.message, { theme: "colored", });
                 }
-               
             })
             .catch(error => {
                 console.error(error);
@@ -53,6 +45,15 @@ const Login = (props) => {
     }
     useEffect(() => {
         if (isLoggedIn) {
+            props.setRefresh(() => {
+                if (props.refresh) {
+                    return false
+                }
+                else {
+                    return true
+                }
+            });
+            console.log("authent")
             navigate('/transactions')
         }
     }, [])
